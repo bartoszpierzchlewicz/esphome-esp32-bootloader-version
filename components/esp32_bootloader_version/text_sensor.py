@@ -14,13 +14,13 @@ Example::
 
     text_sensor:
       - platform: esp32_bootloader_version
-        name: "Bootloader"
+        # name defaults to "Bootloader"
 """
 
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import text_sensor
-from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
+from esphome.const import CONF_NAME, ENTITY_CATEGORY_DIAGNOSTIC
 
 CODEOWNERS = []
 
@@ -34,7 +34,9 @@ CONFIG_SCHEMA = cv.All(
         ESP32BootloaderVersionTextSensor,
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         icon="mdi:chip",
-    ).extend(cv.COMPONENT_SCHEMA),
+    )
+    .extend({cv.Optional(CONF_NAME, default="Bootloader"): cv.string})
+    .extend(cv.COMPONENT_SCHEMA),
     # This component only makes sense on the ESP32 family.
     cv.only_on_esp32,
 )
